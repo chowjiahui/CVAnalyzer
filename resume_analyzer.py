@@ -3,6 +3,7 @@ import google.generativeai as genai
 import PyPDF2
 import docx
 import io
+import os
 import time # To simulate processing if needed, or handle rate limits
 
 # --- Configuration ---
@@ -11,6 +12,22 @@ st.set_page_config(
     page_icon="📄",
     layout="wide"
 )
+
+# Load API key from Streamlit secrets
+try:
+    # This is the standard way for deployed apps
+    api_key = st.secrets["GEMINI_API_KEY"]
+except FileNotFoundError:
+    # Fallback for local development if secrets.toml doesn't exist
+    # You might use an environment variable locally instead
+    st.warning("Secrets file not found. For local development, set GEMINI_API_KEY environment variable or create .streamlit/secrets.toml")
+    # api_key = os.environ.get("GEMINI_API_KEY") # Example using environment variable
+    api_key = None # Or handle this case as needed for local runs
+    if not api_key:
+        st.error("API Key not configured. Ensure secrets.toml or environment variable is set.")
+except KeyError:
+    st.error("GEMINI_API_KEY not found in secrets.toml. Please add it.")
+    api_key = None
 
 # --- Helper Functions ---
 
@@ -40,9 +57,6 @@ def extract_text_from_docx(file_bytes):
 
 def get_gemini_response(prompt, api_key, retries=3, delay=5):
     """Interacts with the Gemini API with error handling and retries."""
-    if not api_key:
-        st.error("API Key not configured. Please enter your Gemini API Key.")
-        return None
     try:
         genai.configure(api_key=api_key)
         model = genai.GenerativeModel('gemini-1.5-flash') # Or use 'gemini-pro'
@@ -94,21 +108,21 @@ and get an analysis and action plan to improve your chances.
 st.divider()
 
 # --- Sidebar for API Key Input ---
-st.sidebar.header("Configuration")
-api_key = st.sidebar.text_input("Enter your Google Gemini API Key:", type="password")
-
-st.sidebar.markdown("---")
-st.sidebar.markdown("### Instructions:")
-st.sidebar.markdown("""
-1.  Get your Gemini API Key from [Google AI Studio](https://aistudio.google.com/app/apikey).
-2.  Paste the API Key above.
-3.  Upload your resume (PDF or DOCX).
-4.  Paste the full job description text.
-5.  Click 'Analyze Gaps'.
-""")
-st.sidebar.markdown("---")
-st.sidebar.warning("🔒 Your API key is used only for this session and is not stored.")
-st.sidebar.info("ℹ️ Analysis uses the Gemini API. Ensure you understand Google's data usage policies and potential costs associated with your API key.")
+# st.sidebar.header("Configuration")
+# api_key = st.sidebar.text_input("Enter your Google Gemini API Key:", type="password")
+#
+# st.sidebar.markdown("---")
+# st.sidebar.markdown("### Instructions:")
+# st.sidebar.markdown("""
+# 1.  Get your Gemini API Key from [Google AI Studio](https://aistudio.google.com/app/apikey).
+# 2.  Paste the API Key above.
+# 3.  Upload your resume (PDF or DOCX).
+# 4.  Paste the full job description text.
+# 5.  Click 'Analyze Gaps'.
+# """)
+# st.sidebar.markdown("---")
+# st.sidebar.warning("🔒 Your API key is used only for this session and is not stored.")
+# st.sidebar.info("ℹ️ Analysis uses the Gemini API. Ensure you understand Google's data usage policies and potential costs associated with your API key.")
 
 
 # --- Main Area for Inputs and Outputs ---
@@ -131,9 +145,7 @@ st.divider()
 # --- Analysis and Output Section ---
 if analyze_button:
     # --- Input Validation ---
-    if not api_key:
-        st.error("⚠️ Please enter your Gemini API Key in the sidebar.")
-    elif uploaded_file is None:
+    if uploaded_file is None:
         st.error("⚠️ Please upload your resume file.")
     elif not job_description.strip():
         st.error("⚠️ Please paste the job description.")
