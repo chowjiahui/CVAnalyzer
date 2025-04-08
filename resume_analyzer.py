@@ -10,7 +10,7 @@ import time # To simulate processing if needed, or handle rate limits
 st.set_page_config(
     page_title="Resume Gap Analyzer",
     page_icon="📄",
-    layout="wide"
+    layout="centered"
 )
 
 # Load API key from Streamlit secrets
