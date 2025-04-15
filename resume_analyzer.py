@@ -1,6 +1,8 @@
 import streamlit as st
-import os
+
+from config import GOOGLE_API_KEY, TAVILY_API_KEY
 from helpers import extract_text_from_pdf, extract_text_from_docx, get_gemini_response
+from contacts import find_linkedin_profiles
 
 # --- Configuration ---
 st.set_page_config(
@@ -9,29 +11,18 @@ st.set_page_config(
     layout="centered"
 )
 
-# Load API key from Streamlit secrets
-try:
-    # This is the standard way for deployed apps
-    #api_key = st.secrets["GEMINI_API_KEY"]
-    api_key = os.environ.get("GEMINI_API_KEY")
-except FileNotFoundError:
-    # Fallback for local development if secrets.toml doesn't exist
-    # You might use an environment variable locally instead
-    st.warning("Secrets file not found. For local development, set GEMINI_API_KEY environment variable or create .streamlit/secrets.toml")
-    # api_key = os.environ.get("GEMINI_API_KEY") # Example using environment variable
-    api_key = None # Or handle this case as needed for local runs
-    if not api_key:
-        st.error("API Key not configured. Ensure secrets.toml or environment variable is set.")
-except KeyError:
-    st.error("GEMINI_API_KEY not found in secrets.toml. Please add it.")
-    api_key = None
+if not GOOGLE_API_KEY:
+    st.error("Google API Key not configured. Ensure secrets.toml or environment variable is set.")
+    st.stop()
+if not TAVILY_API_KEY:
+    st.error("Tavily API Key not configured. Ensure secrets.toml or environment variable is set.")
+    st.stop()
 
 # --- Streamlit App UI ---
 
 st.title("📄 Resume Gap Analyzer & Action Planner")
 st.markdown("""
-Welcome! This app helps you identify gaps between your resume and a specific job description
-using the power of Google's Gemini AI. Upload your resume, paste the job description,
+Welcome! This app helps you identify gaps between your resume and a specific job description. Upload your resume, paste the job description,
 and get an analysis and action plan to improve your chances.
 """)
 st.divider()
@@ -65,8 +56,7 @@ with col2:
     st.subheader("2. Paste Job Description")
     job_description = st.text_area("Paste the full job description text here", height=300, label_visibility="collapsed")
 
-st.divider()
-
+linkedin_networking = st.checkbox("Help me find relevant profiles I can reach out to for coffee!")
 analyze_button = st.button("✨ Analyze Gaps", type="primary", use_container_width=True)
 
 st.divider()
@@ -157,18 +147,18 @@ if analyze_button:
             """
 
             # --- Call Gemini API ---
-            with st.spinner("🧠 Contacting Gemini for Gap Analysis... (This may take a moment)"):
-                gap_analysis_result = get_gemini_response(gap_analysis_prompt, api_key)
+            with st.spinner("🧠 Conducting Gap Analysis... (This may take a moment)"):
+                gap_analysis_result = get_gemini_response(gap_analysis_prompt, GOOGLE_API_KEY)
 
             if gap_analysis_result and not gap_analysis_result.startswith("Error:"):
                 st.subheader("📊 Identified Gaps")
                 st.markdown(gap_analysis_result)
                 st.divider()
 
-                with st.spinner("💡 Generating Action Plan with Gemini..."):
+                with st.spinner("💡 Generating Action Plan..."):
                      # Create the specific prompt for the action plan
                      action_plan_prompt = action_plan_prompt_template.format(gap_analysis_result=gap_analysis_result)
-                     action_plan_result = get_gemini_response(action_plan_prompt, api_key)
+                     action_plan_result = get_gemini_response(action_plan_prompt, GOOGLE_API_KEY)
 
                 if action_plan_result and not action_plan_result.startswith("Error:"):
                      st.subheader("🚀 Your Action Plan")
@@ -181,4 +171,30 @@ if analyze_button:
             else:
                  st.error("Failed to get a response from the Gemini API for Gap Analysis.")
 
-        # else: Error message already displayed by extraction function
+            # --- find relevant profiles ---
+            if linkedin_networking:
+                with st.spinner(" Finding Relevant Profiles..."):
+                    final_results = find_linkedin_profiles(job_description)
+
+                if final_results and final_results.profiles:
+                    st.header("👥 Potential Networking Contacts")
+                    st.markdown(
+                        """
+                        **Disclaimer:** These potential contacts were identified using web search and AI analysis of publicly available snippets.
+                        Please review profiles carefully before reaching out. Always be professional and respectful when initiating contact for networking or informational interviews.
+                        Direct automated access to LinkedIn is against their Terms of Service.
+                        """
+                    )
+                    st.markdown("---")
+
+                    for i, profile in enumerate(final_results.profiles):
+                        st.subheader(f"{i + 1}. Potential Contact")
+                        st.markdown(f"**Profile URL:** [{profile.url}]({profile.url})")
+                        st.markdown(f"**AI Reason for Relevance:** {profile.justification}")
+                        st.markdown("---")
+                elif final_results and not final_results.profiles:
+                    st.warning(
+                        "The AI analysis filtered out all initial search results. Try refining the job description or the process might need tuning.")
+                else:
+                    # Error messages are handled within find_linkedin_profiles
+                    st.info("Process finished, check messages above.")
