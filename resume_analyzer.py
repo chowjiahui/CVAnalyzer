@@ -173,6 +173,7 @@ if analyze_button:
 
             # --- find relevant profiles ---
             if linkedin_networking:
+                st.markdown("---")
                 with st.spinner(" Finding Relevant Profiles..."):
                     final_results = find_linkedin_profiles(job_description)
 
