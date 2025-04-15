@@ -3,7 +3,7 @@ langchain==0.3.23
 langchain-community==0.3.21
 langchain-google-genai==2.0.10 #2.1.2
 nest-asyncio==1.6.0
-protobuf==6.30.2
+protobuf==5.29.4
 pydantic==2.11.3
 PyPDF2==3.0.1
 python-docx==1.1.2
