@@ -56,7 +56,7 @@ Web Search Results (Snippets from search engine for site:linkedin.com/in/):
 
 Instructions:
 1. Carefully review each search result snippet and its URL.
-2. Filter out any results that are clearly irrelevant (e.g., links to job postings themselves, company pages, recruiter profiles if distinguishable, profiles with titles/companies/skills completely unrelated to the target job).
+2. Filter out any results that are clearly irrelevant (e.g., links to job postings themselves, company pages, recruiter profiles if distinguishable, profiles with titles/companies/skills completely unrelated to the target job, LinkedIn posts, LinkedIn comments).
 3. From the remaining potentially relevant profiles, select and rank the top 5-7 most promising ones that likely represent individuals currently or recently in roles *similar* to the target job, based *only* on the information in the snippet. Prioritize relevance based on matching title, company, and mentioned skills apparent in the snippet.
 4. Provide your ranked list with justifications.
 

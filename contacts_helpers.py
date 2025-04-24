@@ -18,10 +18,12 @@ class ProfileResult(BaseModel):
     """Structure for a single ranked LinkedIn profile result."""
     url: str = Field(description="The direct URL to the LinkedIn profile.")
     justification: str = Field(description="Brief (1-sentence) justification for relevance based strictly on the search snippet content.")
+    primary_job_title: str = Field(description="The primary job title of the LinkedIn profile result.")
+    company_name: Optional[str] = Field(description="The company name of the LinkedIn profile result.")
 
 class RankedProfiles(BaseModel):
     """Structure for the final list of ranked profiles."""
-    profiles: List[ProfileResult] = Field(description="A ranked list of the most relevant LinkedIn profile URLs and justifications.")
+    profiles: List[ProfileResult] = Field(description="A ranked list of the most relevant LinkedIn profiles, with URLs, justifications, job titles and company names.")
 
 
 
