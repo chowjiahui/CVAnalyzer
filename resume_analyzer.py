@@ -189,9 +189,9 @@ if analyze_button:
                     st.markdown("---")
 
                     for i, profile in enumerate(final_results.profiles):
-                        st.subheader(f"{i + 1}. Potential Contact")
+                        st.subheader(f"{i + 1}. Potential Contact: {profile.primary_job_title} at {profile.company_name}")
                         st.markdown(f"**Profile URL:** [{profile.url}]({profile.url})")
-                        st.markdown(f"**AI Reason for Relevance:** {profile.justification}")
+                        st.markdown(f"**Reason for Relevance:** {profile.justification}")
                         st.markdown("---")
                 elif final_results and not final_results.profiles:
                     st.warning(
