@@ -18,8 +18,7 @@ class ProfileResult(BaseModel):
     """Structure for a single ranked LinkedIn profile result."""
     url: str = Field(description="The direct URL to the LinkedIn profile.")
     justification: str = Field(description="Brief (1-sentence) justification for relevance based strictly on the search snippet content.")
-    primary_job_title: str = Field(description="The primary job title of the LinkedIn profile result.")
-    company_name: Optional[str] = Field(description="The company name of the LinkedIn profile result.")
+    linkedin_title: str = Field(description="The LinkedIn title of the profile result.")
 
 class RankedProfiles(BaseModel):
     """Structure for the final list of ranked profiles."""
@@ -64,6 +63,7 @@ def format_search_results_for_prompt(results: List[dict]) -> str:
     for i, result in enumerate(results):
         # Tavily search results are often dictionaries with 'url' and 'content'
         url = result.get('url', 'N/A')
+        linkedin_title = result.get('title', 'No title available') # normally contains '[Name] - [Position] - [Company]'
         content = result.get('content', 'No snippet available')
-        formatted += f"Result {i+1}:\nURL: {url}\nSnippet: {content}\n---\n"
+        formatted += f"Result {i+1}:\nURL: {url}\nSnippet: {content}\nLinkedIn Title: {linkedin_title}\n---\n"
     return formatted if formatted else "No search results found."

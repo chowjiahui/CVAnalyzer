@@ -189,10 +189,7 @@ if analyze_button:
                     st.markdown("---")
 
                     for i, profile in enumerate(final_results.profiles):
-                        if profile.primary_job_title and profile.company_name:
-                            st.subheader(f"{i + 1}. Potential Contact: {profile.primary_job_title} at {profile.company_name}")
-                        else:
-                            st.subheader(f"{i + 1}. Potential Contact:")
+                        st.subheader(f"{i + 1}. {profile.linkedin_title}")
                         st.markdown(f"**Profile URL:** [{profile.url}]({profile.url})")
                         st.markdown(f"**Reason for Relevance:** {profile.justification}")
                         st.markdown("---")

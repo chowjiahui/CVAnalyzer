@@ -139,8 +139,8 @@ def find_linkedin_profiles(job_description: str) -> Optional[RankedProfiles]:
         formatted_snippets = format_search_results_for_prompt(all_search_results)
 
         ranked_profiles: RankedProfiles = filter_rank_chain.invoke({
-            "primary_job_title": job_details.primary_job_title,
-            "company_name": job_details.company_name,
+            "primary_job_title": job_details.primary_job_title, # based on JD
+            "company_name": job_details.company_name, # based on JD
             "key_skills_for_networking": ", ".join(job_details.key_skills_for_networking), # Pass as string
             "search_results_snippets": formatted_snippets
         })
