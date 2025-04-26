@@ -1,8 +1,8 @@
-# Your Dream Job Planner ✨
+# Your Dream Job Planner
 
-Stop dreaming, start planning! Analyze your CV against your desired role - identify gaps, have an action plan, and find inspiring role models on LinkedIn to guide your journey.
+Analyze your CV against your desired role - this tool helps identify gaps in your CV, take action, find relevant people on LinkedIn you could reach out to for coffee.
 
-Try it [here](https://dream-job-planner.streamlit.app)!
+Try it [here](https://dream-job-planner.streamlit.app).
 
 ---
 
@@ -11,7 +11,7 @@ Try it [here](https://dream-job-planner.streamlit.app)!
 ><em>"Right now, is where the suffering arises. Between the sound and the projection, between things-as-they-are and things as we-want-them-to-be. This is what the Buddha taught: to misperceive reality is to suffer."</em><br>
 > Yongey Mingyur Rinpoche, In Love with the World: A Monk's Journey Through the Bardos of Living and Dying
 
-Landing your dream job can feel heavy and the path is often unknown. It's challenging to:
+This tool has an optimistic name, but the reality is, preparing for specific roles that speak to your heart can be a heavy process. It's challenging to:
 
 *   **Objectively assess** how well your current experience aligns with a specific job description.
 *   **Pinpoint the exact skills or experiences** you need to develop.
