@@ -30,21 +30,6 @@ This tool tackles these challenges head-on, from your CV and dream job descripti
     *   Keywords to emphasize in your CV update.
 *   **LinkedIn Role Model Finder:** Individuals currently in similar roles or companies, whom you might want to reach out for coffee.
 
-## 📸 Screenshots / Demo
-
-*Include 1-3 screenshots of your app in action here! Visuals are very helpful.*
-
-**(Example Screenshot Placeholder 1: Upload Interface)**
-![Upload Interface](link/to/your/screenshot1.png)
-
-**(Example Screenshot Placeholder 2: Gap Analysis Results)**
-![Gap Analysis](link/to/your/screenshot2.png)
-
-**(Example Screenshot Placeholder 3: Action Plan & Role Models)**
-![Action Plan](link/to/your/screenshot3.png)
-
-*(Strongly recommend adding a short GIF or linking to a video demo if possible!)*
-
 ## 🛠️ How It Works
 
 1.  **Input:** The user uploads their CV and pastes the job description text.
