@@ -6,7 +6,7 @@ from contacts import find_linkedin_profiles
 
 # --- Configuration ---
 st.set_page_config(
-    page_title="Resume Gap Analyzer",
+    page_title="Dream Job Planner",
     page_icon="📄",
     layout="centered"
 )
@@ -20,7 +20,7 @@ if not TAVILY_API_KEY:
 
 # --- Streamlit App UI ---
 
-st.title("📄 Resume Gap Analyzer & Action Planner")
+st.title("📄 Dream Job Planner")
 st.markdown("""
 Welcome! This app helps you identify gaps between your resume and a specific job description. Upload your resume, paste the job description,
 and get an analysis and action plan to improve your chances.
